@@ -22,6 +22,12 @@
           <p v-else-if="inventory > 0 && inventory < 8">almost gone</p>
           <p v-else>out of stock</p>
           <span v-if="onSale">on sale!</span>
+          <ul>
+            <li v-for="detail in details">{{ detail }}</li>
+          </ul>
+          <div v-for="variant in variants" :key="variant.vId">
+            <p>{{variant.color}}</p>
+          </div>
         </div>
       </div>
     </div>

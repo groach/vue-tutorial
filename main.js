@@ -6,6 +6,17 @@ var app = new Vue({
     image: './assets/img.png',
     link: 'htts://google.com',
     inventory: 0,
-    onSale: true
+    onSale: true,
+    details: ['det1', 'det2', 'det3'],
+    variants: [
+      {
+        vId: 3333,
+        color: 'green'
+      },
+      {
+        vId: 4444,
+        color: 'red'
+      }
+    ]
   }
 })
