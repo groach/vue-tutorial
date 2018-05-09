@@ -3,11 +3,23 @@
   <head>
     <meta charset="utf-8">
     <title>tutorial</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
+    <div class="nav-bar">
+
+    </div>
     <div id="app">
-      <h1>{{ product }}</h1>
-      <h3>{{ description }}</h3>
+      <div class="product">
+        <div class="product-image">
+          <a :href="link">
+            <img v-bind:src="image" alt="">
+          </a>
+        </div>
+        <div class="product-info">
+          <h1>{{ product }}</h1>
+        </div>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script type="text/javascript" src="main.js"></script>
