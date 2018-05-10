@@ -29,9 +29,13 @@ Vue.component('product', {
           :style="{ backgroundColor: variant.color }"
           @mouseover="updateProduct(index)">
         </div>
+        <div v-for="review in reviews">
+          <p>{{review.name}}</p>
+        </div>
         <button v-on:click="addToCart" type="button" name="button">Add to cart</button>
         <button v-on:click="removeFromCart" type="button" name="button">Remove from cart</button>
       </div>
+      <product-review @review-submit="addReview"></product-review>
     </div>
   `,
   data() {
@@ -42,6 +46,7 @@ Vue.component('product', {
       selectedVariant: 0,
       link: 'htts://google.com',
       details: ['det1', 'det2', 'det3'],
+      reviews: [],
       variants: [
         {
           vId: 3333,
@@ -69,6 +74,9 @@ Vue.component('product', {
     },
     updateProduct: function(index){
       this.selectedVariant = index
+    },
+    addReview: function(review){
+      this.reviews.push(review)
     }
   },
   computed: {
@@ -85,6 +93,30 @@ Vue.component('product', {
       return this.variants[this.selectedVariant].sale
     }
   }
+})
+
+Vue.component('product-review', {
+  template:`
+    <form class="review-form" @submit.prevent="onSubmit">
+      <input v-model="name">
+      <input type="submit">
+    </form>
+  `,
+  data() {
+    return{
+      name: null
+    }
+  },
+  methods: {
+    onSubmit: function(){
+      let productReview = {
+        name: this.name
+      }
+      this.$emit('review-submit', productReview)
+      this.name = null
+    }
+  }
+
 })
 
 var app = new Vue({
