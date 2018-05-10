@@ -17,7 +17,7 @@
           </a>
         </div>
         <div class="product-info">
-          <h1>{{ product }}</h1>
+          <h1>{{ title }}</h1>
           <p v-if="inventory > 10">in stock</p>
           <p v-else-if="inventory > 0 && inventory < 8">almost gone</p>
           <p v-else>out of stock</p>
@@ -25,11 +25,11 @@
           <ul>
             <li v-for="detail in details">{{ detail }}</li>
           </ul>
-          <div v-for="variant in variants"
+          <div v-for="(variant, index) in variants"
             :key="variant.vId"
             class="color-box"
             :style="{ backgroundColor: variant.color }"
-            @mouseover="updateProduct(variant.img)">
+            @mouseover="updateProduct(index)">
           </div>
           <button v-on:click="addToCart" type="button" name="button">Add to cart</button>
           <button @click="removeFromCart" type="button" name="button">Remove from cart</button>
