@@ -1,3 +1,5 @@
+var eventBus = new Vue()
+
 Vue.component('product', {
   props: {
     premium: {
@@ -29,13 +31,12 @@ Vue.component('product', {
           :style="{ backgroundColor: variant.color }"
           @mouseover="updateProduct(index)">
         </div>
-        <div v-for="review in reviews">
-          <p>{{review.name}}</p>
-        </div>
+
         <button v-on:click="addToCart" type="button" name="button">Add to cart</button>
         <button v-on:click="removeFromCart" type="button" name="button">Remove from cart</button>
       </div>
-      <product-review @review-submit="addReview"></product-review>
+      <product-tabs :reviews="reviews"></product-tabs>
+
     </div>
   `,
   data() {
@@ -74,9 +75,6 @@ Vue.component('product', {
     },
     updateProduct: function(index){
       this.selectedVariant = index
-    },
-    addReview: function(review){
-      this.reviews.push(review)
     }
   },
   computed: {
@@ -92,6 +90,11 @@ Vue.component('product', {
     onSale(){
       return this.variants[this.selectedVariant].sale
     }
+  },
+  mounted(){
+    eventBus.$on('review-submit', productReview => {
+      this.reviews.push(productReview)
+    })
   }
 })
 
@@ -112,11 +115,41 @@ Vue.component('product-review', {
       let productReview = {
         name: this.name
       }
-      this.$emit('review-submit', productReview)
+      eventBus.$emit('review-submit', productReview)
       this.name = null
     }
   }
 
+})
+
+Vue.component('product-tabs', {
+  props: {
+    reviews: {
+      type: Array,
+      required: true
+    }
+  },
+  template: `
+    <div>
+      <span class="tab"
+      :class="{activeTab: selectedTab === tab}"
+      v-for="(tab, index) in tabs"
+      :key="index"
+      @click="selectedTab = tab">
+      {{tab}}
+      </span>
+      <div v-for="review in reviews" v-show="selectedTab === 'Reviews'">
+        <p>{{review.name}}</p>
+      </div>
+      <product-review v-show="selectedTab === 'Make a Review'"></product-review>
+    </div>
+  `,
+  data() {
+    return {
+      tabs: ['Reviews', 'Make a Review'],
+      selectedTab: 'Reviews'
+    }
+  }
 })
 
 var app = new Vue({
